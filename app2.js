@@ -30,6 +30,12 @@ app.get ('/register', (req, res) => {
     res.render ('register');
 });
 
+app.get ('/get-users', (req, res) => {
+    userModel.find().then((users) => {
+        res.send (users);
+    })
+});
+
 app.post ('/register', async (req, res) => {
     const {username, email, password} = req.body;
 
@@ -37,9 +43,27 @@ app.post ('/register', async (req, res) => {
         username: username,
         email: email,
         password: password
-    })
+    });
     res.send (newUser);
-})
+});
+
+app.get ('/update-user', async (req, res) => {
+    await userModel.findOneAndUpdate ({
+        username: 'a'
+    }, {
+        email: "paneer@gmail.com"
+    });
+
+    res.send ('User Updated!');
+});
+
+app.get ('/delete-user', async (req, res) => {
+    await userModel.findOneAndDelete ({
+        username: 'a'
+    })
+
+    res.send ('User Deleted!');
+});
 
 app.post ('/get-form-data', (req, res) => {
     console.log (req.body);
